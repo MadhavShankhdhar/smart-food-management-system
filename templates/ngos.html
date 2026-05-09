@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NGOs</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>Smart Food Waste Management</h1>
+            <nav>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('add_data') }}">Add Data</a>
+                <a href="{{ url_for('ngos') }}">NGOs</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+            </nav>
+        </header>
+        <main>
+            <h2><i class="fas fa-users" style="color: var(--primary-color); margin-right: 0.5rem;"></i>NGOs</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <h3><i class="fas fa-user-plus" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Add NGO</h3>
+            <form method="POST" action="{{ url_for('add_ngo_route') }}">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" required><br>
+                <label for="phone">Phone:</label>
+                <input type="text" name="phone" id="phone" required><br>
+                <label for="location">Location:</label>
+                <input type="text" name="location" id="location" required><br>
+                <button type="submit">Add NGO</button>
+            </form>
+            <h3><i class="fas fa-list" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Existing NGOs</h3>
+            <ul>
+                {% for ngo in ngos %}
+                <li>{{ ngo[1] }} - {{ ngo[2] }} - {{ ngo[3] }}</li>
+                {% endfor %}
+            </ul>
+        </main>
+    </body>
+
+</html>

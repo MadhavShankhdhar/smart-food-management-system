@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Smart Food Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>Smart Food Waste Management</h1>
+            <nav>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('add_data') }}">Add Data</a>
+                <a href="{{ url_for('ngos') }}">NGOs</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+            </nav>
+        </header>
+        <main>
+            <h2>Dashboard</h2>
+            <div class="stats">
+                <div class="stat">
+                    <i class="fas fa-utensils fa-2x" style="color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                    <h3>Total Cooked</h3>
+                    <p>{{ stats.total_cooked }} kg</p>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-check-circle fa-2x"
+                        style="color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                    <h3>Total Consumed</h3>
+                    <p>{{ stats.total_consumed }} kg</p>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-trash-alt fa-2x" style="color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                    <h3>Total Waste</h3>
+                    <p>{{ stats.total_waste }} kg</p>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-chart-pie fa-2x" style="color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                    <h3>Avg Waste %</h3>
+                    <p>{{ "%.2f"|format(stats.avg_waste_pct) }}%</p>
+                </div>
+            </div>
+            <div class="prediction">
+                <h3><i class="fas fa-crystal-ball" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Next
+                    Day Prediction</h3>
+                <p>Expected Waste: {{ "%.2f"|format(prediction) }}%</p>
+            </div>
+            <div class="trends">
+                <h3><i class="fas fa-chart-line" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Weekly
+                    Trends</h3>
+                <ul>
+                    {% for day, pct in trends.items() %}
+                    <li>{{ day }}: {{ "%.2f"|format(pct) }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="recent">
+                <h3><i class="fas fa-history" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Recent Data
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Meal Type</th>
+                            <th>Menu Items</th>
+                            <th>Cooked</th>
+                            <th>Consumed</th>
+                            <th>Waste</th>
+                            <th>Waste %</th>
+                            <th>People Served</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in recent_data %}
+                        <tr>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td>{{ "%.2f"|format(row[7]) }}</td>
+                            <td>{{ row[8] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+
+</html>
